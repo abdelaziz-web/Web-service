@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="Calculator"
+    targetNamespace="http://localhost/soap_test/calculator.wsdl"
+    xmlns:tns="http://localhost/soap/calculator.wsdl"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <message name="addRequest">
+        <part name="a" type="xsd:int"/>
+        <part name="b" type="xsd:int"/>
+    </message>
+    
+    <message name="addResponse">
+        <part name="result" type="xsd:int"/>
+    </message>
+
+    <portType name="CalculatorPortType">
+        <operation name="add">
+            <input message="tns:addRequest"/>
+            <output message="tns:addResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="CalculatorBinding" type="tns:CalculatorPortType">
+        <soap:binding style="rpc"
+            transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="add">
+            <soap:operation soapAction="urn:arnleadserviceaction"/>
+            <input>
+                <soap:body use="encoded" 
+                    namespace="urn:arnleadservice"
+                    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded"
+                    namespace="urn:arnleadservice"
+                    encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="CalculatorService">
+        <port name="CalculatorPort" binding="tns:CalculatorBinding">
+<soap:address location="http://localhost/soap_test/server.php"/>
+        </port>
+    </service>
+</definitions>
